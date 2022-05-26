@@ -12,17 +12,17 @@
 
 > virtualBox 安装完后如下 会生成网卡 后续使用此网卡进行通信
 
-![image-20220526125358714](https://raw.githubusercontent.com/lilu188011/img-repo/image-20220526125358714.png?raw=true)
+![image-20220526125358714](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220526125358714.png?raw=true)
 
 > vagrant 官网镜像库
 
-![image-20220526125706619](https://raw.githubusercontent.com/lilu188011/img-repo/image-20220526125706619.png?raw=true)
+![image-20220526125706619](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220526125706619.png?raw=true)
 
 ### 二、 开始安装
 
 #### 	1. 准备好刚刚下载box文件  Vagrantfile
 
-​			![](https://raw.githubusercontent.com/lilu188011/img-repo/image-20220526130024762.png?raw=true)
+​			![](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220526130024762.png?raw=true)
 
 #### 	2.这里贴上Vagrantfile 文件(如果只装一台 对应boxes数组调整)
 
@@ -94,11 +94,11 @@ end
 
 ##### 	**1)  全局创建nat网络**
 
-​			![image-20220526131109135](https://raw.githubusercontent.com/lilu188011/img-repo/image-20220526131109135.png?raw=true)
+​			![image-20220526131109135](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220526131109135.png?raw=true)
 
 ##### 2） 为虚拟机应用上刚刚创建的nat网络  刷新网卡地址
 
-![image-20220526131441506](https://raw.githubusercontent.com/lilu188011/img-repo/image-20220526131441506.png?raw=true)
+![image-20220526131441506](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220526131441506.png?raw=true)
 
 ##### 3） 多机更改完后 建议以后从virtualbox 启动 不通过命令行 vagrant无法感知修改
 
@@ -108,7 +108,7 @@ end
 
 #### 		1）查看当前虚拟机
 
-​					![image-20220526132029093](https://raw.githubusercontent.com/lilu188011/img-repo/image-20220526132029093.png?raw=true)
+​					![image-20220526132029093](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220526132029093.png?raw=true)
 
 #### 		2)  连接虚拟机	
 
