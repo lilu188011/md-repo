@@ -19,19 +19,19 @@
 
 > PicGo	安装完后 安装git插件   若提示安装node 把node也安装
 
-![image-20220526184000893](C:\Users\v_lulvli\Desktop\pics\image-20220526184000893.png)
+![3243252342](https://raw.githubusercontent.com/lilu188011/img-repo/master/3243252342.png)
 
 ### 二、 设置github图床
 
 #### 			1. 设置图床
 
-![image-20220526184319607](C:\Users\v_lulvli\Desktop\pics\image-20220526184319607.png)
+![6976967976](https://raw.githubusercontent.com/lilu188011/img-repo/master/6976967976.png)
 
 #### 			2. typora 验证
 
 ​									依次点击 文件---偏好设置-图像   (因为我这边验证把typora图片上传了github，所以报错)
 
-​									![image-20220526184814431](C:\Users\v_lulvli\Desktop\pics\image-20220526184814431.png)
+![98098687685](https://raw.githubusercontent.com/lilu188011/img-repo/master/98098687685.png)
 
 #### 		3. 开始愉快玩耍md
 
