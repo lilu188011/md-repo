@@ -33,6 +33,12 @@
 	
 06 测试docker安装是否成功
 	sudo docker run hello-world
+	
+07 安装 docker compose
+	yum install -y epel-release
+	yum install -y python-pip
+	pip install --upgrade pip
+	pip install docker-compose
 ```
 
 #### mysql 安装
@@ -470,4 +476,40 @@ revoke all on db1.* from 'alex'@"%";
 revoke all privileges on *.* from 'alex'@'%';
 ```
 
-​	
+#### docker 安装 torna
+
+```
+  
+docker run --name torna --restart=always \
+  -p 7700:7700 \
+  -e JAVA_OPTS="-Xms256m -Xmx256m" \
+  --link=mysql-master \
+  -v /opt/torna/config:/torna/config \
+  -d tanghc2020/torna:latest
+```
+
+#### docker 安裝jenkins
+
+```
+mkdir -p /var/jenkins_mount
+chmod 777 /var/jenkins_mount
+docker run -d -p 10240:8080 -p 10241:50000 \
+  -v /var/jenkins_mount:/var/jenkins_home \
+  --restart=always \
+  -v /etc/localtime:/etc/localtime \
+  -v /var/run/docker.sock:/var/run/docker.sock  \
+  -v $(which docker):/usr/bin/docker  \
+  -v $(which docker-compose):/usr/local/bin/docker-compose  --name myjenkins jenkins/jenkins:2.345
+  
+更改镜像源
+ sed -i 's/https:\/\/updates.jenkins.io\/update-center.json/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins\/updates\/update-center.json/g'  hudson.model.UpdateCenter.xml
+ 
+初次跳过插件安装、插件仓库可用初始化完后
+ sed -i 's#https://updates.jenkins.io/download#https://mirrors.tuna.tsinghua.edu.cn/jenkins#g' updates/default.json
+ sed -i 's#http://www.google.com#https://www.baidu.com#g' updates/default.json
+ 
+重启jenkins 
+ docker restart myjenkins
+```
+
+#### 	
