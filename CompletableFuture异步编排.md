@@ -53,3 +53,36 @@ allof： 所有任务都完成
 anyof:  只要一个任务完成
 ```
 
+
+
+
+
+```
+ public static void test() throws Exception {
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+        // task 3 4 5 依赖task1  task2 独立
+        CompletableFuture<String> task1Future = CompletableFuture.supplyAsync(() -> {
+            System.out.println("task1");
+            return "ok";
+        }, executors);
+
+        CompletableFuture<Void> task2Future = CompletableFuture.runAsync(() -> {
+            System.out.println("task2");
+        }, executors);
+
+        CompletableFuture<Void> task3Future = task1Future.thenAcceptAsync((result) -> {
+            System.out.println(result + "task3");
+        });
+
+        CompletableFuture<Void> task4Future = task1Future.thenAcceptAsync((result) -> {
+            System.out.println(result + "task4");
+        });
+
+        CompletableFuture<Void> task5Future = task1Future.thenAcceptAsync((result) -> {
+            System.out.println(result + "task5");
+        });
+        CompletableFuture.allOf(task2Future,task3Future,task4Future,task5Future).get();
+
+    }
+```
+
