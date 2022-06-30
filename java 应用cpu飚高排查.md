@@ -4,9 +4,7 @@
 
 top命令
 
-![image-20220630100024401](C:\Users\v_lulvli\AppData\Roaming\Typora\typora-user-images\image-20220630100024401.png)
-
-
+![image-20220630100741543](https://raw.githubusercontent.com/lilu188011/img-repo/master/image-20220630100741543.png)
 
 ### 二、  查询出该进程id中的线程信息
 
