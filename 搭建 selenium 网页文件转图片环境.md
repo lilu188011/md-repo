@@ -10,10 +10,10 @@
 # 64位 linux 系统
 https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
-# 64位 weindow 系统
+# 64位 window 系统
 http://www.google.cn/chrome/browser/desktop/index.html?standalone=1&platform=win64
 
-# 32位 weindow 系统
+# 32位 window 系统
 http://www.google.cn/chrome/browser/desktop/index.html?standalone=1&platform=win
 
 # 官网 chromedriver
@@ -21,6 +21,9 @@ http://chromedriver.storage.googleapis.com/index.html
 
 # 淘宝 chromedriver 镜像
 https://npm.taobao.org/mirrors/chromedriver/
+
+#selenium 官网
+https://www.selenium.dev/zh-cn/documentation/
 ```
 
 **说明：chrome 和 chromedriver 版本需要一致**
