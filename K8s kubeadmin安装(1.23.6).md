@@ -1,5 +1,27 @@
 ### 									K8s kubeadmin安装(1.23.6)
 
+#### 0.安装docker
+
+```
+1.安装docker依赖
+	yum install -y yum-utils
+2.设置docker仓库镜像地址	
+	yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+3.安装下载docker	
+	yum install docker-ce docker-ce-cli containerd.io
+4.设置docker开机启动
+	systemctl enable docker && systemctl start docker
+5.配置docker 镜像加速器
+	 cat <<EOF> /etc/docker/daemon.json
+     { 	
+     "exec-opts": ["native.cgroupdriver=systemd"], 	
+     "registry-mirrors": ["https://kcjii7g1.mirror.aliyuncs.com"]
+     } 
+     EOF
+6.重启docker
+	systemctl restart docker
+```
+
 
 
 #### 1.关闭防火墙
@@ -12,14 +34,14 @@ systemctl disable firewalld
 #### 2.关闭selinux
 
 ```
-sed -i 's#SELINUX=.*#SELINUX=disabled#' /etc/selinux/config
+sed -i 's/enforcing/disabled/' /etc/selinux/config
 ```
 
 #### 3.关闭swap
 
 ```
 swapoff -a  #临时
-sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab  #永久
+sed -ri ‘s/.swap./#&/’ /etc/fstab  #永久
 关闭swap后，一定要重启虚拟机
 ```
 
@@ -27,20 +49,20 @@ sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab  #永久
 
 ```
 cat >> /etc/hosts << EOF
-192.168.1.110 k8s-master
-192.168.1.111 k8s-node1
-192.168.1.110 k8s-node2
+192.168.56.100 k8s-master
+192.168.56.101 k8s-node1
+192.168.56.102 k8s-node2
 EOF
 ```
 
-#### 5.IPv4 和 IPv6的桥接配置
+#### 5.添加网桥过滤和地址转发功能
 
 ```
 cat > /etc/sysctl.d/k8s.conf << EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
 EOF
-
 sysctl --system  #生效
 ```
 
@@ -55,19 +77,19 @@ yum install ntpdate -y
 ntpdate time.windows.com
 ```
 
-#### 7.添加docker仓库阿里云yum源
+#### 7.添加kubenetes国内源
 
 ```
-cat > /etc/yum.repos.d/kubernetes.repo << EOF
-[kubernetes]
-name=kubernetes
+cat > /etc/yum.repos.d/kubernetes.repo << EOF[kubernetes]name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
 enabled=1
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-gpgcheck=1
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+gpgcheck=0
+repo_gpgcheck=0
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg 
+https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 
-
+########以下非必要操作
 wget https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 
 rpm --import rpm-package-key.gpg
@@ -86,11 +108,12 @@ systemctl enable kubelet
 
 ```
 kubeadm init \
---apiserver-advertise-address=192.168.1.110 \
---image-repository registry.aliyumcs.com/google_containers \
---kubernetes-version v1.23.6 \
---service-cidr=10.96.0.0/12 \
---pod-network-cidr=10.244.0.0/16
+  --apiserver-advertise-address=192.168.56.100 \
+  --image-repository registry.aliyuncs.com/google_containers \
+  --kubernetes-version v1.23.6 \
+  --service-cidr=10.96.0.0/12 \
+  --pod-network-cidr=10.244.0.0/16 \
+  --ignore-preflight-errors=all
 ```
 
 #### 10.安装排查
@@ -125,11 +148,11 @@ kubectl get nodes
 #### 12.节点加入集群
 
 ```
-kubeadm join 192.168.1.100:6443 --token <master控制台的> \
+kubeadm join 192.168.56.100:6443 --token <master控制台的> \
 --discovery-token-ca-cert-hash <master控制台的hash>
 #如果初始化的token不小心清空了
 kubeadm token list
-kubeadm token create
+kubeadm token create --print-join-command
 #获取hash值
 openssl x509 -pubkey -in /etc/kubenetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
 openssl dgst -sha256 -hex | sed 's/^.* //'
@@ -141,10 +164,12 @@ hash值: sha256:hash值
 ```
 #在master节点上执行
 #下载calico配置文件,可能会网络超时
-curl https://docs.projectcalico.org/manifests/calico.yaml -O
+https://docs.projectcalico.org/v3.22/manifests/calico.yaml
 #修改calico.yaml文件中的CALICO_IPV4POOL_CIDR配置,配置为master初始化POD cidr
-#修改 IP_AUTODETECTION_METHOD下的网卡名称
+#查询镜像
 grep image calico.yaml
+#把上面查询的镜像下载下来
+for i in calico/cni:v3.8.9 calico/pod2daemon-flexvol:v3.8.9 calico/node:v3.8.9 calico/kube-controllers:v3.8.9 ; do docker pull $i ; done
 #删除镜像docker.io/前缀，避免下载过慢导致失败
 sed -i 's#docker.io/##g' calico.yaml
 kubectl apply -f calico.yaml
