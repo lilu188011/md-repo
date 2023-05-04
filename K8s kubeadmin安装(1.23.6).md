@@ -12,7 +12,7 @@ systemctl disable firewalld
 #### 2.关闭selinux
 
 ```
-sed -i 's/enforcing/disabled/*' /etc/selinux/config
+sed -i 's#SELINUX=.*#SELINUX=disabled#' /etc/selinux/config
 ```
 
 #### 3.关闭swap
