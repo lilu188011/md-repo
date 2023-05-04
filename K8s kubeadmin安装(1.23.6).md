@@ -47,6 +47,10 @@ sysctl --system  #生效
 #### 6.时间同步
 
 ```
+# 修改时区（创建软连接）
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+# 将硬件写入主板
+hwclock -w 
 yum install ntpdate -y
 ntpdate time.windows.com
 ```
