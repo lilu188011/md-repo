@@ -19,7 +19,7 @@ sed -i 's/enforcing/disabled/*' /etc/selinux/config
 
 ```
 swapoff -a  #临时
-sed -ri 's/.*swap.*/#&' /etc/fstab  #永久
+sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab  #永久
 关闭swap后，一定要重启虚拟机
 ```
 
