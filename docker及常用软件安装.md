@@ -36,9 +36,9 @@
 	
 07 安装 docker compose
 	yum install -y epel-release
-	yum install -y python-pip
-	pip install --upgrade pip
-	pip install docker-compose
+	yum install -y python3-pip
+	pip3 install --upgrade pip
+	pip3 install docker-compose
 ```
 
 #### mysql 安装
