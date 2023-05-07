@@ -1,0 +1,14 @@
+del /f host.txt >nul 2>nul 
+certutil -urlcache -split -f  https://raw.hellogithub.com/hosts  hosts.txt
+type hosts.txt > c:\windows\system32\drivers\etc\hosts
+ipconfig /flushdns
+
+
+
+schtasks /create /tn "download" /tr C:\Users\Administrator\Desktop\download.bat /sc daily /st 09:10:00
+
+
+schtasks.msc  查看任务计划
+
+#自启动
+schtasks.exe /create /tn "init" /ru SYSTEM /sc ONSTART /tr "C:testinit.bat"
