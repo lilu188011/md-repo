@@ -143,3 +143,60 @@ pluginRepositories 		pluginRepositories 表示插件的下载仓库地址
 </pluginRepositories>
 ```
 
+#### 4.使用profiles和properties元素来定义两个不同的构建配置
+
+```xml
+<profiles>
+       <profile>
+           <activation>
+              <!-- <os>
+                   <family>Windows</family>
+               </os>-->
+               <activeByDefault>true</activeByDefault>
+           </activation>
+           <id>local</id>
+           <properties>
+               <dubbo.registry.address>10.6.1.1:2181</dubbo.registry.address>
+               <jdbc.passwod></jdbc.passwod>
+           </properties>
+       </profile>
+       <profile>
+           <id>test</id>
+           <properties>
+               <dubbo.registry.address>10.6.14.11:2181</dubbo.registry.address>
+           </properties>
+       </profile>
+   </profiles>
+   
+   <build>
+       <resources>
+           <resource>
+               <directory>${project.basedir}/src/main/resources</directory>
+               <filtering>true</filtering>
+           </resource>
+           <resource>
+               <directory>${project.basedir}/bin</directory>
+               <targetPath>/bin</targetPath>
+               <filtering>true</filtering>
+           </resource>
+       </resources>
+   </build>
+
+
+使用（在xml或properties中使用）
+
+	a) xml文件中使用
+
+  		<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"/>
+
+	b) properties文件中使用
+
+		jdbc.password=${jdbc.passwod}
+执行maven命令，使profiles的local节点生效
+
+		install -P local -DskipTests
+
+
+maven profile propoties 也可读取程序参数   https://www.jb51.net/article/270985.htm
+```
+
