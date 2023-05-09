@@ -200,3 +200,11 @@ pluginRepositories 		pluginRepositories 表示插件的下载仓库地址
 maven profile propoties 也可读取程序参数   https://www.jb51.net/article/270985.htm
 ```
 
+#### 5.maven依赖理解
+
+```
+dependencyManagement 管理依赖版本、只有显示引入才会导入   dependencies 直接导入
+maven中scope为import时
+	只会导入 dependencyManagement 中的依赖  dependencies 依赖不做导入  
+```
+
